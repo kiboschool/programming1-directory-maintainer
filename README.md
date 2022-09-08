@@ -32,12 +32,19 @@ The Reporting and Data Team lead gave you the following requirements for the dir
 - The `log-window` will be passed into your program as a command line argument (this is handled by the starter code)
 - For example - if the `log-window` is 5, then the folder should have the most recent 5 log files only -- the others should be deleted.
 - The default retention policy is 30 days -- the default value of the argument is 30.
+- Conveniently, log files are named starting with the date, formatted YYYYMMDD, so you should be able to sort them alphabetically to get the most recent ones.
 
 *Large Files*:
-- Within the txt folder, files with a size greater than a `size-threshold` should be moved into separate directory inside `txt` called `large_txt_files`.
+- Within the txt folder, files with a size greater than a `size-threshold` should be moved into a separate directory inside `txt` called `large_txt_files`.
 - The size threshold value will be an int value passed in as a command line
     argument, and represents a file size in KB.
 - The default file size, if nothing is passed in, is 50KB.
+
+If there are any other files in the directory, your program should print a message with the file name, but should not move the file. For example:
+
+```
+Unknown extension: Q3-board-mtg-final2-FINAL.pdf
+```
 
 ## Use Case
 
@@ -66,16 +73,16 @@ You need to implement the `clean_directory` function. It may be helpful to split
  
  If we have a directory that looks like the following:
  
- ```txt
- - backlog
-   - sheet_1.csv
-   - sheet_2.csv
-   - component_x.log
-   - employees_i.txt
-   - employees_ii.txt
-   - component_y.log
-   - component_z.log
- ```
+```txt
+- backlog
+  - sheet_1.csv
+  - sheet_2.csv
+  - 20221002_component_x.log
+  - employees_i.txt
+  - employees_ii.txt
+  - 20221003_component_y.log
+  - 20221001_component_z.log
+```
 
 After running your program like this:
 
@@ -85,20 +92,20 @@ python3 main.py backlog
 
 Afterwards, the directory should be structured like this:
 
- ```txt
- - backlog
-   - csv
-     - sheet_1.csv
-     - sheet_2.csv
-   - log
-     - component_x.log
-     - component_y.log
-     - component_z.log
-   - txt
-     - employees_i.txt
-     - txt_large_files
-       - employees_ii.txt
- ```
+```txt
+- backlog
+  - csv
+    - sheet_1.csv
+    - sheet_2.csv
+  - log
+    - 20221001_component_z.log
+    - 20221002_component_x.log
+    - 20221003_component_y.log
+  - txt
+    - employees_i.txt
+    - large_txt_files
+      - employees_ii.txt
+```
 
  ## Hints
 
