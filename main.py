@@ -2,12 +2,56 @@
 # Organizes the files within a directory
 # Usage: python3 main.py [path/to/directory] [--log-window=N] [--size-threshold=M]
 import argparse
+import os
 
 
 def clean_directory(directory, log_window, size_threshold):
-    # Implement the directory cleaning functionality here
-    pass
+    # make directories
+    csv_path = os.path.join(directory, "csv") 
+    log_path = os.path.join(directory, "log") 
+    txt_path = os.path.join(directory, "txt") 
+    lg_txt_path = os.path.join(txt_path, "large_txt_files") 
+    os.mkdir(csv_path)
+    os.mkdir(log_path)
+    os.mkdir(txt_path)
+    os.mkdir(lg_txt_path)
 
+    files = os.listdir(directory)
+    logs = []
+    for file in files:
+        ext = os.path.splitext(file)
+        current_path = os.path.join(directory, file) 
+
+        # handle csvs
+        if ext == "csv":
+            new_path = os.path.join(csv_path, file)
+            os.rename(current_path, new_path)
+
+        # keep logs for later
+        elif ext == "log":
+            logs.push(file)
+
+        # handle txt files
+        elif ext == "txt":
+            if os.path.getsize(current_path)/1000 > size_threshold:
+                new_path = os.path.join(lg_txt_path, file)
+            else:
+                new_path = os.path.join(txt_path, file)
+            os.rename(current_path, new_path)
+
+        # handle other kinds of files with a warning
+        else:
+            print("Unknown extension: ", file)
+
+    # handle logs
+    ordered_logs = sorted(logs)
+    for i in range(len(logs)):
+        current_path = os.path.join(directory, ordered_logs[i])
+        if i < log_window:
+            new_path = os.path.join(log_path, ordered_logs[i])
+            os.rename(current_path, new_path)
+        else:
+            os.remove(current_path)
 
 
 # You've been provided with the argument-handling code that reads the
@@ -29,5 +73,3 @@ if __name__ == "__main__":
     size_threshold = parser.parse_args().size_threshold
 
     clean_directory(directory, log_window, size_threshold)
-
-
