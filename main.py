@@ -10,9 +10,9 @@ def clean_directory(directory, log_window, size_threshold):
 
 
 
-# You've been provided with the argument-handling code that reads the
-# `directory`, `--log-window`, and `--size-threshold` values from the command line
-# It calls the clean_directory function and passes in the values
+# This code reads the command line arguments and passes them into the
+# clean_directory function.
+# It sets the defaults for the log window and the size threshold
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Clean up a messy data directory')
     parser.add_argument('--log-window',
@@ -29,5 +29,3 @@ if __name__ == "__main__":
     size_threshold = parser.parse_args().size_threshold
 
     clean_directory(directory, log_window, size_threshold)
-
-
