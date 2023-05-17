@@ -76,7 +76,26 @@ class TestDirectoryMaintainer(TestCase):
             self.assertTrue(path.exists(path.join(self.test_directory, 'txt', filename)))
 
     def test_large_txt_files_are_identified(self):
-        pass
+        file_list = [
+          # ('file_name', file_size(kb))
+            ('file1.txt', 1.),
+            ('file2.txt', 2.),
+            ('file3.txt', 0.5),
+            ('file4.txt', 0.1),
+            ('large_file1.txt', 22.),
+            ('large_file2.txt', 21.4),
+            ('large_file3.txt', 51.6),
+        ]
+        self._create_files(self.test_directory, file_list)
+        self._run_dir_maintainer(size_threshold=20)
+        self.assertTrue(path.isdir(path.join(self.test_directory, 'txt')))
+        for filename, filesize in file_list:
+            if filesize <= 20.:
+                self.assertTrue(path.exists(path.join(self.test_directory, 'txt', filename)))
+            else:
+                self.assertFalse(path.exists(path.join(self.test_directory, 'txt', filename)))
+                self.assertTrue(path.exists(path.join(self.test_directory, 'txt', 'large_txt_files', filename)))
+
 
     def test_log_files_are_moved(self):
         file_list = [
