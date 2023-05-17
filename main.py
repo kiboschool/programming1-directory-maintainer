@@ -46,7 +46,7 @@ def clean_directory(directory, log_window, size_threshold):
             print("Unknown extension: ", file)
 
     # handle logs
-    ordered_logs = sorted(logs)
+    ordered_logs = sorted(logs, reverse=True)
     for i in range(len(logs)):
         current_path = os.path.join(directory, ordered_logs[i])
         if i < log_window:
