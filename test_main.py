@@ -9,6 +9,9 @@ from unittest.mock import patch
 from unittest import TestCase
 import unittest
 
+from gradescope_utils.autograder_utils.decorators import weight
+
+
 ONE_KB = 1024  # bytes
 
 
@@ -46,6 +49,7 @@ class TestDirectoryMaintainer(TestCase):
         print(cmd)
         subprocess.run(cmd)
 
+    @weight(10)
     def test_csv_files_are_moved(self):
         file_list = [
           # ('file_name', file_size(kb))
@@ -61,6 +65,7 @@ class TestDirectoryMaintainer(TestCase):
             self.assertTrue(path.exists(path.join(self.test_directory, 'csv', filename)))
 
 
+    @weight(10)
     def test_txt_files_are_moved(self):
         file_list = [
           # ('file_name', file_size(kb))
@@ -75,6 +80,7 @@ class TestDirectoryMaintainer(TestCase):
         for filename, filesize in file_list:
             self.assertTrue(path.exists(path.join(self.test_directory, 'txt', filename)))
 
+    @weight(5)
     def test_large_txt_files_are_identified(self):
         file_list = [
           # ('file_name', file_size(kb))
@@ -97,6 +103,7 @@ class TestDirectoryMaintainer(TestCase):
                 self.assertTrue(path.exists(path.join(self.test_directory, 'txt', 'large_txt_files', filename)))
 
 
+    @weight(10)
     def test_log_files_are_moved(self):
         file_list = [
           # ('file_name', file_size(kb))
@@ -111,6 +118,7 @@ class TestDirectoryMaintainer(TestCase):
         for filename, filesize in file_list:
             self.assertTrue(path.exists(path.join(self.test_directory, 'log', filename)))
 
+    @weight(5)
     def test_log_files_log_window_honoured(self):
         file_list = [
           # ('file_name', file_size(kb))
@@ -129,6 +137,7 @@ class TestDirectoryMaintainer(TestCase):
             else:
                 self.assertTrue(path.exists(path.join(self.test_directory, 'log', filename)))
 
+    @weight(2)
     def test_log_files_fewer_files_than_log_window_handled(self):
         file_list = [
           # ('file_name', file_size(kb))
@@ -143,6 +152,7 @@ class TestDirectoryMaintainer(TestCase):
         for filename, filesize in file_list:
             self.assertTrue(path.exists(path.join(self.test_directory, 'log', filename)))
 
+    @weight(5)
     def test_files_moved_and_not_copied(self):
         file_list = [
           # ('file_name', file_size(kb))
@@ -163,6 +173,7 @@ class TestDirectoryMaintainer(TestCase):
         for filename, filesize in file_list:
             self.assertFalse(path.exists(path.join(self.test_directory, filename)))
 
+    @weight(10)
     def test_unknown_file_extensions_left_untouched(self):
         valid_extensions_file_list = [
           # ('file_name', file_size(kb))
